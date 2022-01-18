@@ -1,48 +1,55 @@
 <template>
-  <div :class="[$style.wrp]">
-    <div @click="onClick(cur - 1)">-</div>
+  <div class="pagination__wrapper">
+    <div @click="onClickPage(cur - 1)">-</div>
     <div
-      v-for="i in amount" :key="i"
-      :class="{
-        [$style.active]: cur === i
-      }"
-      @click="onClick(i)"
-    >{{ i }}</div>
-    <div @click="onClick(cur + 1)">+</div>
+      v-for="page in amount"
+      :key="page"
+      @click="onClickPage(page)"
+      :class="{ active: page === cur }"
+    >
+      {{ page }}
+    </div>
+    <div @click="onClickPage(cur + 1)">+</div>
   </div>
 </template>
 
 <script>
 export default {
+  name: "Pagination",
   props: {
-    length: Number,
     n: Number,
-    cur: Number
+    cur: Number,
+    length: Number,
   },
   computed: {
-    amount () {
-      return Math.ceil(this.length / this.n)
-    }
+    amount() {
+      return Math.ceil(this.length / this.n);
+    },
   },
   methods: {
-    onClick (p) {
+    onClickPage(p) {
       if (p < 1 || p > this.amount) {
-        return
+        return;
       }
-      this.$emit('paginate', p)
+      this.$emit('paginate', p);
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.pagination {
+  &__wrapper {
+    display: flex;
+    justify-content: center;
+    & > div {
+      cursor: pointer;
+      padding: 10px;
     }
   }
 }
-</script>
-
-<style module lang="scss">
-.wrp {
-  display: flex;
-  & > div {
-    padding: 10px;
-    &.active {
-      background: #ccc;
-    }
-  }
+.active {
+  background: #030303;
+  color: white;
 }
 </style>
